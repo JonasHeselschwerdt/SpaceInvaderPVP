@@ -6,12 +6,12 @@ import settings as s
 from Creatures import *
 
 pygame.init()
-window = pygame.display.set_mode((s.SCREEN_WIDTH, s.SCREEN_HEIGHT))
+window = pygame.display.set_mode((s.WIDTH, s.HEIGHT))
 pygame.display.set_caption("Space Invader PVP") 
 clock = pygame.time.Clock() 
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)            
-sock.connect(('172.20.10.3', 65432))   # hier die IPv4 des PIs eingeben
+sock.connect(('192.168.0.133', 65432))   # hier die IPv4 des PIs eingeben
 
 Localplayer = Player((0,0))
 Enemyplayer = Player((0,0))
@@ -30,7 +30,7 @@ while running:
             running = False  
     
     keys = pygame.key.get_pressed()
-    if keys[pygame.SPACE]:
+    if keys[pygame.K_SPACE]:
         shoot = True
     else:
         shoot = False
@@ -38,7 +38,8 @@ while running:
     mouse_x, mouse_y = pygame.mouse.get_pos()
     input = {"MouseX": mouse_x , "MouseY": mouse_y , "shoot": shoot}
 
-    sock.sendall(pickle.dumps(input))
+    data = pickle.dumps(input)
+    sock.sendall(len(data).to_bytes(4, 'big') + data)
 
 pygame.quit()                                   
 sys.exit()  

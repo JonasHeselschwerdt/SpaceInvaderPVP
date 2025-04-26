@@ -19,11 +19,17 @@ print(f"Verbunden mit {addr}")
 # Nachrichten empfangen
 try:
     while True:
-        data = conn.recv(2048)  # Größere Puffergröße, falls nötig
-        if not data:
-            break  # Verbindung wurde geschlossen
-        input_data = pickle.loads(data)
-        print(f"Empfangen: {input_data}")
+        
+        length_bytes = conn.recv(4)
+        length = int.from_bytes(length_bytes, 'big')
+        data = b''
+        while len(data) < length:
+            packet = conn.recv(length - len(data))
+            if not packet:
+                break
+            data += packet
+        obj = pickle.loads(data)
+
 finally:
     conn.close()
     server_socket.close()
