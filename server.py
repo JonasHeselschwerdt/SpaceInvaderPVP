@@ -19,7 +19,7 @@ print(f"Verbunden mit {addr}")
 # Nachrichten empfangen
 try:
     while True:
-        
+
         length_bytes = conn.recv(4)
         length = int.from_bytes(length_bytes, 'big')
         data = b''
@@ -29,6 +29,7 @@ try:
                 break
             data += packet
         obj = pickle.loads(data)
+        print(f"Empfangen: {obj}")
 
 finally:
     conn.close()
