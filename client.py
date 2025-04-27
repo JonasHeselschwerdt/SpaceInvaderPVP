@@ -16,6 +16,13 @@ own_ip = sock.getsockname()[0]
 
 running = True
 
+Localplayercolour = s.BLUE
+Localplayerx = 0
+Localplayery = 0
+Enemyplayerx = 0
+Enemyplayery = 0
+Enemyplayercolour = s.RED
+
 while running:
 
     clock.tick(60)
@@ -55,13 +62,6 @@ while running:
 
         player_info = pickle.loads(received_data)
 
-        global Localplayercolour
-        global Localplayerx
-        global Localplayery
-        global Enemyplayerx
-        global Enemyplayery
-        global Enemyplayercolour
-
         if own_ip == player_info["PlayerIPs"[0]]:
             Localplayercolour = player_info["colour1"]
             Localplayerx = player_info["x1"]
@@ -76,16 +76,15 @@ while running:
             Enemyplayercolour = player_info["colour1"]
             Enemyplayerx = player_info["x1"]
             Enemyplayery = player_info["y1"]
-
-        pygame.draw.rect(window, Localplayercolour, (Localplayerx - 20, Localplayery - 10, 40, 20))
-        pygame.draw.rect(window, Enemyplayercolour, (Enemyplayerx - 20, Enemyplayery - 10, 40, 20))
-
-        pygame.display.flip()
         
     except Exception as e:
         print(f"Fehler beim Empfangen: {e}")
         running = False
 
+    pygame.draw.rect(window, Localplayercolour, (Localplayerx - 20, Localplayery - 10, 40, 20))
+    pygame.draw.rect(window, Enemyplayercolour, (Enemyplayerx - 20, Enemyplayery - 10, 40, 20))
+
+    pygame.display.flip()
 
 pygame.quit()                                   
 sys.exit()  
