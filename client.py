@@ -12,11 +12,7 @@ clock = pygame.time.Clock()
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)            
 sock.connect(('192.168.0.133', 65432))   # hier die IPv4 des PIs eingeben
-
-#Localplayer = Player((0,0))
-#Enemyplayer = Player((0,0))
-#Localplayer.colour = s.BLUE
-#Enemyplayer.colour  = s.RED
+own_ip = sock.getsockname()[0]
 
 running = True
 
@@ -36,7 +32,6 @@ while running:
         shoot = False
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
-    #print(mouse_x)
     input = {"MouseX": mouse_x , "MouseY": mouse_y , "shoot": shoot}
 
     data = pickle.dumps(input)
@@ -59,20 +54,28 @@ while running:
             received_data += packet
 
         player_info = pickle.loads(received_data)
+
+        if own_ip == player_info["PlayerIPs"[0]]:
+            Localplayercolour = player_info["colour1"]
+            Localplayerx = player_info["x1"]
+            Localplayery = player_info["y1"]
+            Enemyplayercolour = player_info["colour2"]
+            Enemyplayerx = player_info["x2"]
+            Enemyplayery = player_info["y2"]
+        else:
+            Localplayercolour = player_info["colour2"]
+            Localplayerx = player_info["x2"]
+            Localplayery = player_info["y2"]
+            Enemyplayercolour = player_info["colour1"]
+            Enemyplayerx = player_info["x1"]
+            Enemyplayery = player_info["y1"]
         
-        # --- Werte aktualisieren ---
-        Localplayerx = player_info["x"]
-        Localplayery = player_info["y"]
-        Localplayercolour = player_info["colour"]
-
-        #print(Localplayerx)
-
     except Exception as e:
         print(f"Fehler beim Empfangen: {e}")
         running = False
 
-    # --- Rechteck zeichnen ---
     pygame.draw.rect(window, Localplayercolour, (Localplayerx - 20, Localplayery - 10, 40, 20))
+    pygame.draw.rect(window, Enemyplayercolour, (Enemyplayerx - 20, Enemyplayery - 10, 40, 20))
 
     pygame.display.flip()
 

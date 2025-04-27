@@ -14,6 +14,7 @@ server_socket.bind((HOST, PORT))
 
 connections = []
 playerinput = {}
+player_ips = []
 
 # Threading starten:
 
@@ -33,7 +34,6 @@ def client_thread(conn, spieler_id):
                 data += packet
             inp = pickle.loads(data)
             playerinput[spieler_id] = inp
-            #print(playerinput)
             elapsed_time = time.time() - start_time
             time_to_sleep = max(0,1/60 - elapsed_time)
             time.sleep(time_to_sleep)
@@ -51,6 +51,7 @@ while playercounter < 2:
 
     conn, addr = server_socket.accept()
     print(f"Verbunden mit {addr}")
+    player_ips.append(addr[0])
     connections.append(conn)
     thread = threading.Thread(target=client_thread, args=(conn, playercounter))
     thread.start()
@@ -62,49 +63,37 @@ Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
 Player2 = Player((s.WIDTH // 2 , 40),s.RED)
 
 while True:
+
     start_time = time.time()
+
     try:
-
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
-        #print(player1move)
         player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
-
     except:
-
         player1move = (0,0)
         player2move = (0,0)
-
     Player1.move(player1move)
     Player2.move(player2move)
 
-    daten1 = {
-        "x": Player1.x,
-        "y": Player1.y,
-        "colour": Player1.colour
-    }
-    daten2 = {
-        "x": Player2.x,
-        "y": Player2.y,
-        "colour": Player2.colour
+    daten = {
+        "x1": Player1.x,
+        "y1": Player1.y,
+        "colour1": Player1.colour,
+        "x2": Player2.x,
+        "y2": Player2.y,
+        "colour2":Player2.colour,
+        "PlayerIPs": player_ips
     }
 
-    data_serialized1 = pickle.dumps(daten1)
-    data_length1 = len(data_serialized1).to_bytes(4, 'big')
+    data_serialized = pickle.dumps(daten)
+    data_length = len(data_serialized).to_bytes(4, 'big')
 
     for conn in connections:
         try:
-            conn.sendall(data_length1 + data_serialized1)
+            conn.sendall(data_length + data_serialized)
         except:
             pass
 
-    data_serialized2 = pickle.dumps(daten2)
-    data_length2 = len(data_serialized2).to_bytes(4, 'big')
-
-    for conn in connections:
-        try:
-            conn.sendall(data_length2 + data_serialized2)
-        except:
-            pass
     elapsed_time = time.time() - start_time
     time_to_sleep = max(0,1/60 - elapsed_time)
     time.sleep(time_to_sleep)
