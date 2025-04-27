@@ -36,6 +36,7 @@ while running:
         shoot = False
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
+    #print(mouse_x)
     input = {"MouseX": mouse_x , "MouseY": mouse_y , "shoot": shoot}
 
     data = pickle.dumps(input)
@@ -63,6 +64,8 @@ while running:
         Localplayerx = player_info["x"]
         Localplayery = player_info["y"]
         Localplayercolour = player_info["colour"]
+
+        #print(Localplayerx)
 
     except Exception as e:
         print(f"Fehler beim Empfangen: {e}")
