@@ -13,10 +13,10 @@ clock = pygame.time.Clock()
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)            
 sock.connect(('192.168.0.133', 65432))   # hier die IPv4 des PIs eingeben
 
-Localplayer = Player((0,0))
-Enemyplayer = Player((0,0))
-Localplayer.colour = s.BLUE
-Enemyplayer.colour  = s.RED
+#Localplayer = Player((0,0))
+#Enemyplayer = Player((0,0))
+#Localplayer.colour = s.BLUE
+#Enemyplayer.colour  = s.RED
 
 running = True
 
@@ -40,6 +40,38 @@ while running:
 
     data = pickle.dumps(input)
     sock.sendall(len(data).to_bytes(4, 'big') + data)
+
+    # --- Daten vom Server empfangen ---
+    try:
+        # Erst die Länge lesen
+        length_bytes = sock.recv(4)
+        if not length_bytes:
+            break  # Verbindung verloren
+        length = int.from_bytes(length_bytes, 'big')
+
+        # Dann die eigentlichen Daten lesen
+        received_data = b''
+        while len(received_data) < length:
+            packet = sock.recv(length - len(received_data))
+            if not packet:
+                break
+            received_data += packet
+
+        player_info = pickle.loads(received_data)
+        
+        # --- Werte aktualisieren ---
+        Localplayerx = player_info["x"]
+        Localplayery = player_info["y"]
+        Localplayercolour = player_info["colour"]
+
+    except Exception as e:
+        print(f"Fehler beim Empfangen: {e}")
+        running = False
+
+    # --- Rechteck zeichnen ---
+    pygame.draw.rect(window, Localplayercolour, (Localplayerx - 20, Localplayery - 10, 40, 20))
+
+    pygame.display.flip()
 
 pygame.quit()                                   
 sys.exit()  

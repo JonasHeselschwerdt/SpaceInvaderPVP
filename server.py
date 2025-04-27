@@ -2,24 +2,26 @@ import socket
 import pickle
 import threading
 import settings as s
+from Creatures import Player
 
-# Server-Adresse und Port
-HOST = '0.0.0.0'  # Lausche auf allen Netzwerk-Interfaces
-PORT = 65432      # Gleicher Port wie im Client
+HOST = '0.0.0.0'  
+PORT = 65432     
 
-# TCP/IP-Socket erstellen
+
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 
 connections = []
-playerpositions = [(100, s.SCREEN_HEIGHT - 40), (600, s.SCREEN_HEIGHT - 40)]
 
-def client_thread(conn, spieler_id):           # Funktion für die Client-Verarbeitung in einem Thread
-    global spielzustand
-    conn.sendall(pickle.dumps(spielzustand)) 
+# Threading starten:
+
+def client_thread(conn, spieler_id): 
+
+    global playerinput
+    playerinput = {}
+
     try:
         while True:
-
             length_bytes = conn.recv(4)
             length = int.from_bytes(length_bytes, 'big')
             data = b''
@@ -27,18 +29,16 @@ def client_thread(conn, spieler_id):           # Funktion für die Client-Verarb
                 packet = conn.recv(length - len(data))
                 if not packet:
                     break
-                    data += packet
-            obj = pickle.loads(data)
-            print(f"Empfangen von {spieler_id}: {obj}")
-
+                data += packet
+            inp = pickle.loads(data)
+            playerinput[spieler_id] = inp
     finally:
         conn.close()
-        server_socket.close()
+        #server_socket.close()
 
-server_socket.listen(2)  # Maximal 2 Clients gleichzeitig (für später wichtig)
+server_socket.listen(2)  
 print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
 
-# Verbindung akzeptieren
 playercounter = 0
 while playercounter < 1:
 
@@ -48,6 +48,44 @@ while playercounter < 1:
     thread = threading.Thread(target=client_thread, args=(conn, playercounter))
     thread.start()
     playercounter += 1
+
+# Ab hier Gameloop:
+
+Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
+#Player2 = Player((s.WIDTH // 2 , 40),s.RED)
+
+while True:
+
+    try:
+
+        player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
+        #player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
+
+    except:
+
+        player1move = (0,0)
+        #player2move = (0,0)
+
+    Player1.move(player1move)
+    #Player2.move(player2move)
+
+    daten1 = {
+        "x": Player1.x,
+        "y": Player1.y,
+        "colour": Player1.colour
+    }
+
+    data_serialized = pickle.dumps(daten1)
+    data_length = len(data_serialized).to_bytes(4, 'big')
+
+    for conn in connections:
+        try:
+            conn.sendall(data_length + data_serialized)
+        except:
+            pass
+
+    
+
 
 
 
