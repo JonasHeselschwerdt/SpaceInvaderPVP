@@ -55,6 +55,13 @@ while running:
 
         player_info = pickle.loads(received_data)
 
+        global Localplayercolour
+        global Localplayerx
+        global Localplayery
+        global Enemyplayerx
+        global Enemyplayery
+        global Enemyplayercolour
+        
         if own_ip == player_info["PlayerIPs"[0]]:
             Localplayercolour = player_info["colour1"]
             Localplayerx = player_info["x1"]
