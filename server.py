@@ -35,7 +35,7 @@ def client_thread(conn, spieler_id):
             playerinput[spieler_id] = inp
             #print(playerinput)
             elapsed_time = time.time() - start_time
-            time_to_sleep = max(0,1//60 - elapsed_time)
+            time_to_sleep = max(0,1/60 - elapsed_time)
             time.sleep(time_to_sleep)
     finally:
         conn.close()
@@ -62,7 +62,7 @@ Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
 #Player2 = Player((s.WIDTH // 2 , 40),s.RED)
 
 while True:
-
+    start_time = time.time()
     try:
 
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
@@ -91,6 +91,9 @@ while True:
             conn.sendall(data_length + data_serialized)
         except:
             pass
+    elapsed_time = time.time() - start_time
+    time_to_sleep = max(0,1/60 - elapsed_time)
+    time.sleep(time_to_sleep)
 
 
 
