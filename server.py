@@ -3,6 +3,7 @@ import pickle
 import threading
 import settings as s
 from Creatures import Player
+import time
 
 HOST = '0.0.0.0'  
 PORT = 65432     
@@ -12,16 +13,16 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 
 connections = []
+playerinput = {}
 
 # Threading starten:
 
 def client_thread(conn, spieler_id): 
-
+    
     global playerinput
-    playerinput = {}
-
     try:
         while True:
+            start_time = time.time()
             length_bytes = conn.recv(4)
             length = int.from_bytes(length_bytes, 'big')
             data = b''
@@ -32,9 +33,15 @@ def client_thread(conn, spieler_id):
                 data += packet
             inp = pickle.loads(data)
             playerinput[spieler_id] = inp
+            #print(playerinput)
+            elapsed_time = time.time() - start_time
+            time_to_sleep = max(0,1//60 - elapsed_time)
+            time.sleep(time_to_sleep)
     finally:
         conn.close()
         #server_socket.close()
+
+
 
 server_socket.listen(2)  
 print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
@@ -59,6 +66,7 @@ while True:
     try:
 
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
+        #print(player1move)
         #player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
 
     except:
@@ -83,6 +91,8 @@ while True:
             conn.sendall(data_length + data_serialized)
         except:
             pass
+
+
 
     
 
