@@ -47,7 +47,7 @@ server_socket.listen(2)
 print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
 
 playercounter = 0
-while playercounter < 1:
+while playercounter < 2:
 
     conn, addr = server_socket.accept()
     print(f"Verbunden mit {addr}")
@@ -59,7 +59,7 @@ while playercounter < 1:
 # Ab hier Gameloop:
 
 Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
-#Player2 = Player((s.WIDTH // 2 , 40),s.RED)
+Player2 = Player((s.WIDTH // 2 , 40),s.RED)
 
 while True:
     start_time = time.time()
@@ -67,15 +67,15 @@ while True:
 
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
         #print(player1move)
-        #player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
+        player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
 
     except:
 
         player1move = (0,0)
-        #player2move = (0,0)
+        player2move = (0,0)
 
     Player1.move(player1move)
-    #Player2.move(player2move)
+    Player2.move(player2move)
 
     daten1 = {
         "x": Player1.x,
