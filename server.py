@@ -82,13 +82,27 @@ while True:
         "y": Player1.y,
         "colour": Player1.colour
     }
+    daten2 = {
+        "x": Player2.x,
+        "y": Player2.y,
+        "colour": Player2.colour
+    }
 
-    data_serialized = pickle.dumps(daten1)
-    data_length = len(data_serialized).to_bytes(4, 'big')
+    data_serialized1 = pickle.dumps(daten1)
+    data_length1 = len(data_serialized1).to_bytes(4, 'big')
 
     for conn in connections:
         try:
-            conn.sendall(data_length + data_serialized)
+            conn.sendall(data_length1 + data_serialized1)
+        except:
+            pass
+
+    data_serialized2 = pickle.dumps(daten2)
+    data_length2 = len(data_serialized2).to_bytes(4, 'big')
+
+    for conn in connections:
+        try:
+            conn.sendall(data_length2 + data_serialized2)
         except:
             pass
     elapsed_time = time.time() - start_time
