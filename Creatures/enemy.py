@@ -1,23 +1,34 @@
 import settings as s
 import random
+import math
 import pygame
 
 class Normal_Enemy():
 
     def __init__(self):
 
-        self.x = 0
-        self.y = 0
+        self.x = random.choice([0,800])
+        self.y = random.randint(100,s.HEIGHT - 100)
         self.colour = s.WHITE
-        self.speed = 2
+        self.speedabs = 2
+        self.speedy = 0
+        self.speedx = 0
         self.width = 30
         self.height = 30
-        self.points = 1
+        self.delete = False
+        self.rect = pygame.Rect(self.x,self.y,self.width,self.height)
 
-#    def spawn_random(self):
+    def assignrandomspeed(self):
 
-#        self.x = random.randint(0, config.WIDTH - self.width)
-#        return pygame.Rect(self.x, 0, self.width, self.height)
+        rPhi = random.randint(-30,30)
+        self.speedx = math.cos(math.radians(rPhi)) * self.speedabs
+        self.speedy = math.sin(math.radians(rPhi)) * self.speedabs
+    
+    def moveenemy(self):
 
-    def setRandomSpawn(self):
-        self.x = random.randint(0,s.WIDTH - self.width)
+        self.x += self.speedx * self.speedabs
+        self.y += self.speedy * self.speedabs
+
+
+
+

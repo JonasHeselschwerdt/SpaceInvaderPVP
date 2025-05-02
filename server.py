@@ -3,8 +3,10 @@ import pickle
 import settings as s
 from Creatures import Player
 from Creatures import Bullet
+from Creatures import Normal_Enemy
 import time
 import pygame
+import random
 
 pygame.init()
 
@@ -26,6 +28,7 @@ playerinput = {}
 Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE,1)
 Player2 = Player((s.WIDTH // 2 , 40),s.RED,2)
 bullets = []
+enemies = []
 
 while True:
 
@@ -51,8 +54,6 @@ while True:
         pass
 
     #####
-
-
     try:
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
         player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
@@ -77,23 +78,46 @@ while True:
     for bullet in bullets:
         bullet.movebullet()
 
-        bulletrect = pygame.Rect(bullet.x,bullet.y,bullet.width,bullet.height)
         if bullet.player == 1:
-            playerrect = pygame.Rect(Player2.x,Player2.y,Player2.width,Player2.height)
+            playerrect = Player1.rect
         elif bullet.player == 2:
-            playerrect = pygame.Rect(Player1.x,Player1.y,Player1.width,Player1.height)
+            playerrect = Player2.rect
         
-        if bulletrect.colliderect(playerrect):
+        if bullet.rect.colliderect(playerrect):
             bullet.delete = True
             if bullet.player == 1:
                 Player2.lives -= 1
-                print(f"Player 2 has now {Player2.lives} left")
+                print(f"Player 2 has now {Player2.lives} lives left")
             elif bullet.player == 2:
                 Player1.lives -= 1
-                print(f"player 1 now has {Player1.lives} left")
+                print(f"player 1 now has {Player1.lives} lives left")
 
-    bullets = [bullet for bullet in bullets if 0 <= bullet.y <= 600 and not bullet.delete]
+    bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
+
+    if random.random() < (s.SPAWNPROB / 60):
+
+        new_enemy = Normal_Enemy()
+        new_enemy.assignrandomspeed()
+        enemies.append()
+    
+    for enemy in enemies:
+
+        enemy.moveenemy()
         
+        if enemy.rect.colliderect(Player1.rect):
+            Player1.lives -= 1
+            enemy.delete = True
+        elif enemy.rect.colliderect(Player2.rect):
+            Player2.lives -= 1
+            enemy.delete = True
+
+        for bullet in bullets:
+
+            if bullet.rect.colliderect(enemy.rect):
+                enemy.delete = True
+
+    enemies = [enemy for enemy in enemies if 0 <= enemy.y <= s.HEIGHT and 0 <= enemy.x <= s.WIDTH and not enemy.delete]
+
     daten = {
         "x1": Player1.x,
         "y1": Player1.y,
@@ -102,7 +126,8 @@ while True:
         "y2": Player2.y,
         "colour2":Player2.colour,
         "PlayerIPs": player_ips,
-        "Bulletlist": bullets
+        "Bulletlist": bullets,
+        "Enemylist": enemies
     }
 
     data_serialized = pickle.dumps(daten)

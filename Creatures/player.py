@@ -1,5 +1,6 @@
 import settings as s
 import math
+import pygame
 
 class Player():
 
@@ -13,6 +14,7 @@ class Player():
         self.colour = farbe
         self.type = typ
         self.lives = 5
+        self.rect = pygame.Rect(self.x,self.y,self.width,self.height)
 
     def move(self,move_order):
 

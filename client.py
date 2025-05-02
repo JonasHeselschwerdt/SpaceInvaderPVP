@@ -67,6 +67,7 @@ while running:
             Enemyplayery = player_info["y1"]
 
         bulletlist = player_info["Bulletlist"] 
+        enemielist = player_info["Enemylist"]
 
     except Exception as e:
         print(f"Fehler beim Empfangen: {e}")
@@ -78,6 +79,10 @@ while running:
     for bullet in bulletlist:
 
         pygame.draw.rect(window,bullet.colour,(bullet.x,bullet.y,bullet.width,bullet.height))
+
+    for enemy in enemielist:
+
+        pygame.draw.rect(window,enemy.colour,(enemy.x,enemy.y,enemy.width,enemy.height))
 
     pygame.display.flip()
 

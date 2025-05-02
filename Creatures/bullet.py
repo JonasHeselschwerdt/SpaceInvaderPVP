@@ -13,6 +13,7 @@ class Bullet():
         self.colour = colour
         self.player = playertype
         self.delete = False
+        self.rect = pygame.Rect(self.x,self.y,self.width,self.height)
     
     def movebullet(self):
         
