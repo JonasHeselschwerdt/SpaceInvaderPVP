@@ -15,9 +15,6 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_addr = ('192.168.178.53', 65432)
 own_ip = socket.gethostbyname(socket.gethostname())
 
-#sock.connect(('192.168.178.53', 65432))   # hier die IPv4 des PIs eingeben
-#own_ip = sock.getsockname()[0]
-
 running = True
 
 Localplayercolour = s.BLUE
@@ -46,32 +43,15 @@ while running:
     input = {"MouseX": mouse_x , "MouseY": mouse_y , "shoot": shoot}
 
     data = pickle.dumps(input)
-    #sock.sendall(len(data).to_bytes(4, 'big') + data)
     sock.sendto(data, server_addr)
 
-    # --- Daten vom Server empfangen ---
     try:
-        # Erst die Länge lesen
-        sock.settimeout(0.05)  # kurz warten
+        sock.settimeout(0.05)
         try:
             data, _ = sock.recvfrom(4096)
             player_info = pickle.loads(data)
         except socket.timeout:
-            continue  # falls kein Paket empfangen wurde
-        """length_bytes = sock.recv(4)
-        if not length_bytes:
-            break  # Verbindung verloren
-        length = int.from_bytes(length_bytes, 'big')
-
-        # Dann die eigentlichen Daten lesen
-        received_data = b''
-        while len(received_data) < length:
-            packet = sock.recv(length - len(received_data))
-            if not packet:
-                break
-            received_data += packet
-
-        player_info = pickle.loads(received_data)"""
+            continue  
 
         if own_ip == player_info["PlayerIPs"][0]:
             Localplayercolour = player_info["colour1"]

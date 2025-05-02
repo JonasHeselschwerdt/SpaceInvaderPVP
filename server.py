@@ -14,43 +14,9 @@ server_socket.bind((HOST, PORT))
 connections = []
 playerinput = {}
 player_ips = []
-
-def client_thread(conn, spieler_id): 
-    
-    global playerinput
-    try:
-        while True:
-            start_time = time.time()
-            length_bytes = conn.recv(4)
-            length = int.from_bytes(length_bytes, 'big')
-            data = b''
-            while len(data) < length:
-                packet = conn.recv(length - len(data))
-                if not packet:
-                    break
-                data += packet
-            inp = pickle.loads(data)
-            playerinput[spieler_id] = inp
-            elapsed_time = time.time() - start_time
-            time_to_sleep = max(0,1/60 - elapsed_time)
-            time.sleep(time_to_sleep)
-    finally:
-        conn.close()
-
-#server_socket.listen(2)  
+ 
 print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
 
-"""playercounter = 0
-while playercounter < 1:
-
-    conn, addr = server_socket.accept()
-    print(f"Verbunden mit {addr}")
-    player_ips.append(addr[0])
-    connections.append(conn)
-    thread = threading.Thread(target=client_thread, args=(conn, playercounter))
-    thread.start()
-    playercounter += 1
-"""
 player_addresses = {}
 playerinput = {}
 
@@ -60,7 +26,7 @@ Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
 while True:
 
     start_time = time.time()
-    # UDP-Daten empfangen
+    
     try:
         server_socket.settimeout(0.01)
         while True:
@@ -70,6 +36,7 @@ while True:
             if addr not in player_addresses.values():
                 player_id = len(player_addresses)
                 player_addresses[player_id] = addr
+                player_ips.append(addr[0])
                 print(f"Spieler {player_id} verbunden: {addr}")
 
             player_id = [k for k, v in player_addresses.items() if v == addr][0]
@@ -102,7 +69,6 @@ while True:
 
     for addr in player_addresses.values():
         server_socket.sendto(data_serialized, addr)
-
 
     elapsed_time = time.time() - start_time
     time_to_sleep = max(0,1/60 - elapsed_time)
