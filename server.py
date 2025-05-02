@@ -92,7 +92,6 @@ while True:
                 Player1.lives -= 1
                 print(f"player 1 now has {Player1.lives} lives left")
 
-    bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
 
     if random.random() < (s.SPAWNPROB / 60):
 
@@ -115,9 +114,11 @@ while True:
 
             if bullet.rect.colliderect(enemy.rect):
                 enemy.delete = True
+                bullet.delete = True
 
     enemies = [enemy for enemy in enemies if 0 <= enemy.y <= s.HEIGHT and 0 <= enemy.x <= s.WIDTH and not enemy.delete]
-
+    bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
+    
     daten = {
         "x1": Player1.x,
         "y1": Player1.y,
