@@ -58,7 +58,8 @@ while True:
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
         player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
     except:
-        pass
+        player1move = (0,0)
+        player2move = (0,0)
 
     try:
         Player1.move(player1move)
@@ -79,9 +80,9 @@ while True:
         bullet.movebullet()
 
         if bullet.player == 1:
-            playerrect = Player1.rect
-        elif bullet.player == 2:
             playerrect = Player2.rect
+        elif bullet.player == 2:
+            playerrect = Player1.rect
         
         if bullet.rect.colliderect(playerrect):
             bullet.delete = True

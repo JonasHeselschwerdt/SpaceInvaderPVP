@@ -2,7 +2,7 @@ import pygame
 
 WIDTH, HEIGHT = 800, 600
 RED = (255, 0, 0)  
-LRED = (127,0,0)         
+LRED = (200,100,100)         
 BLACK = (0, 0, 0)           
 BLUE = (0, 0, 255)
 LBLUE = (0,0,127)

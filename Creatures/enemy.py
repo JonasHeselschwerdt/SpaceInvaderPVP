@@ -7,7 +7,7 @@ class Normal_Enemy():
 
     def __init__(self):
 
-        self.x = random.choice([0,800])
+        self.x = random.choice([0,s.WIDTH])
         self.y = random.randint(100,s.HEIGHT - 100)
         self.colour = s.WHITE
         self.speedabs = 2
@@ -20,10 +20,15 @@ class Normal_Enemy():
 
     def assignrandomspeed(self):
 
-        rPhi = random.randint(-30,30)
-        self.speedx = math.cos(math.radians(rPhi)) * self.speedabs
-        self.speedy = math.sin(math.radians(rPhi)) * self.speedabs
-    
+        if self.x == 0:
+            rPhi = random.randint(-30,30)
+            self.speedx = math.cos(math.radians(rPhi)) * self.speedabs
+            self.speedy = math.sin(math.radians(rPhi)) * self.speedabs
+        elif self.x == s.WIDTH:
+            rPhi = random.randint(-150,150)
+            self.speedx = math.cos(math.radians(rPhi)) * self.speedabs
+            self.speedy = math.sin(math.radians(rPhi)) * self.speedabs
+
     def moveenemy(self):
 
         self.x += self.speedx * self.speedabs
