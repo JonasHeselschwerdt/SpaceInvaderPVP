@@ -20,14 +20,13 @@ class Normal_Enemy():
 
     def assignrandomspeed(self):
 
+        rPhi = random.randint(-30,30)
         if self.x == 0:
-            rPhi = random.randint(-30,30)
             self.speedx = math.cos(math.radians(rPhi)) * self.speedabs
             self.speedy = math.sin(math.radians(rPhi)) * self.speedabs
         elif self.x == s.WIDTH:
-            rPhi = random.randint(-150,150)
-            self.speedx = math.cos(math.radians(rPhi)) * self.speedabs
-            self.speedy = math.sin(math.radians(rPhi)) * self.speedabs
+            self.speedx = - (math.cos(math.radians(rPhi)) * self.speedabs)
+            self.speedy = - (math.sin(math.radians(rPhi)) * self.speedabs)
 
     def moveenemy(self):
 

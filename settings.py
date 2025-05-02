@@ -10,4 +10,4 @@ GREEN = (0, 255, 0)
 WHITE = (255,255,255)
 YELLOW = (255,255,0)
 
-SPAWNPROB = 0.5     # propability for a spawn of an enemy every second
+SPAWNPROB = 2     # propability for a spawn of an enemy every second

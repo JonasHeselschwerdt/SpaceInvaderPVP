@@ -58,8 +58,7 @@ while True:
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
         player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
     except:
-        player1move = (0,0)
-        player2move = (0,0)
+        pass
 
     try:
         Player1.move(player1move)
