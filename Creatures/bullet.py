@@ -21,3 +21,4 @@ class Bullet():
             self.y -= self.speed
         elif self.player == 2:
             self.y += self.speed
+        self.rect = pygame.Rect(self.x,self.y,self.width,self.height)

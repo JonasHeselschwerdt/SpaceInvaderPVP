@@ -98,7 +98,7 @@ while True:
 
         new_enemy = Normal_Enemy()
         new_enemy.assignrandomspeed()
-        enemies.append()
+        enemies.append(new_enemy)
     
     for enemy in enemies:
 

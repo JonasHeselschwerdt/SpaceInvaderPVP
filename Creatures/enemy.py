@@ -28,6 +28,7 @@ class Normal_Enemy():
 
         self.x += self.speedx * self.speedabs
         self.y += self.speedy * self.speedabs
+        self.rect = pygame.Rect(self.x,self.y,self.width,self.height)
 
 
 
