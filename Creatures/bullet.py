@@ -12,6 +12,7 @@ class Bullet():
         self.speed = 10
         self.colour = colour
         self.player = playertype
+        self.delete = False
     
     def movebullet(self):
         

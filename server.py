@@ -1,10 +1,10 @@
 import socket
 import pickle
-import threading
 import settings as s
 from Creatures import Player
 from Creatures import Bullet
 import time
+import pygame
 
 HOST = '0.0.0.0'  
 PORT = 65432     
@@ -68,14 +68,25 @@ while True:
 
         if playerinput[1]["shoot"] == True:
             bullets.append(Bullet((Player2.x,Player2.y),2,s.LRED))
-
-        bullets = [bullet for bullet in bullets if not bullet.y < 0 or bullet.y > 600]
     
     except:
         pass
 
     for bullet in bullets:
         bullet.movebullet()
+
+        bulletrect = pygame.Rect(bullet.x,bullet.y,bullet.width,bullet.height)
+        if bullet.player == 1:
+            playerrect = pygame.rect(Player1.x,Player1.y,Player1.width,Player1.height)
+        elif bullet.player == 2:
+            playerrect = pygame.rect(Player2.x,Player2.y,Player2.width,Player2.height)
+        
+        if bulletrect.colliderect(playerrect):
+            bullet.delete = True
+            print(f"Spieler {bullet.player} hat einen Punkt erzielt")
+
+        
+    bullets = [bullet for bullet in bullets if not bullet.y < 0 or bullet.y > 600 or bullet.delete == True]
         
     daten = {
         "x1": Player1.x,
