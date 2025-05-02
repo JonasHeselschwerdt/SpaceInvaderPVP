@@ -29,15 +29,13 @@ while running:
     clock.tick(60)
     window.fill(s.BLACK) 
 
+    shoot = False
+
     for event in pygame.event.get():            
         if event.type == pygame.QUIT:           
-            running = False  
-    
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_SPACE]:
-        shoot = True
-    else:
-        shoot = False
+            running = False 
+        elif event.type == pygame.KEYDOWN:
+            shoot = True
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
     input = {"MouseX": mouse_x , "MouseY": mouse_y , "shoot": shoot}
@@ -67,13 +65,19 @@ while running:
             Enemyplayercolour = player_info["colour1"]
             Enemyplayerx = player_info["x1"]
             Enemyplayery = player_info["y1"]
-        
+
+        bulletlist = player_info["Bulletlist"] 
+
     except Exception as e:
         print(f"Fehler beim Empfangen: {e}")
         running = False
 
     pygame.draw.rect(window, Localplayercolour, (Localplayerx - 20, Localplayery - 10, 40, 20))
     pygame.draw.rect(window, Enemyplayercolour, (Enemyplayerx - 20, Enemyplayery - 10, 40, 20))
+
+    for bullet in bulletlist:
+
+        pygame.draw.rect(window,bullet.colour,(bullet.x,bullet.y,bullet.width,bullet.height))
 
     pygame.display.flip()
 

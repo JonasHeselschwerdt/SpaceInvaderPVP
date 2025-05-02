@@ -3,15 +3,19 @@ import pygame
 
 class Bullet():
         
-    def __init__(self):
+    def __init__(self,position,playertype,colour):
 
-        self.x = 0
-        self.y = 0
+        self.x = position[0]
+        self.y = position[1]
         self.width = 10
         self.height = 10
         self.speed = 10
-        self.colour = s.BLUE
+        self.colour = colour
+        self.player = playertype
     
-#    def spawn_bullet(self,player_x, player_y, player_width ):
-
-#        return pygame.Rect(player_x + player_width // 2 - self.width // 2, player_y - self.height, self.width, self.height)
+    def movebullet(self):
+        
+        if self.player == 1:
+            self.y -= self.speed
+        elif self.player == 2:
+            self.y += self.speed

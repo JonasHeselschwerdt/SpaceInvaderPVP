@@ -3,6 +3,7 @@ import pickle
 import threading
 import settings as s
 from Creatures import Player
+from Creatures import Bullet
 import time
 
 HOST = '0.0.0.0'  
@@ -22,10 +23,13 @@ playerinput = {}
 
 Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE,1)
 Player2 = Player((s.WIDTH // 2 , 40),s.RED,2)
+bullets = []
 
 while True:
 
     start_time = time.time()
+
+    ##### 
 
     try:
         server_socket.settimeout(0.01)
@@ -44,6 +48,9 @@ while True:
     except socket.timeout:
         pass
 
+    #####
+
+
     try:
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
         player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
@@ -56,6 +63,18 @@ while True:
     except:
         pass
 
+    if playerinput[0]["shoot"] == True:
+        bullets.append(Bullet((Player1.x,Player1.y),1,s.LBLUE))
+
+    if playerinput[1]["shoot"] == True:
+        bullets.append(Bullet((Player2.x,Player2.y),2,s.LRED))
+
+    for bullet in bullets:
+        bullet.movebullet()
+
+    bullets = [bullet for bullet in bullets if not bullet.y < 0 or bullet.y > 600]
+
+
     daten = {
         "x1": Player1.x,
         "y1": Player1.y,
@@ -63,7 +82,8 @@ while True:
         "x2": Player2.x,
         "y2": Player2.y,
         "colour2":Player2.colour,
-        "PlayerIPs": player_ips
+        "PlayerIPs": player_ips,
+        "Bulletlist": bullets
     }
 
     data_serialized = pickle.dumps(daten)
