@@ -57,13 +57,13 @@ while running:
             Localplayercolour = player_info["colour1"]
             Localplayerx = player_info["x1"]
             Localplayery = player_info["y1"]
-            #Enemyplayercolour = player_info["colour2"]
-            #Enemyplayerx = player_info["x2"]
-            #Enemyplayery = player_info["y2"]
+            Enemyplayercolour = player_info["colour2"]
+            Enemyplayerx = player_info["x2"]
+            Enemyplayery = player_info["y2"]
         else:
-            #Localplayercolour = player_info["colour2"]
-            #Localplayerx = player_info["x2"]
-            #Localplayery = player_info["y2"]
+            Localplayercolour = player_info["colour2"]
+            Localplayerx = player_info["x2"]
+            Localplayery = player_info["y2"]
             Enemyplayercolour = player_info["colour1"]
             Enemyplayerx = player_info["x1"]
             Enemyplayery = player_info["y1"]
@@ -73,7 +73,7 @@ while running:
         running = False
 
     pygame.draw.rect(window, Localplayercolour, (Localplayerx - 20, Localplayery - 10, 40, 20))
-    #pygame.draw.rect(window, Enemyplayercolour, (Enemyplayerx - 20, Enemyplayery - 10, 40, 20))
+    pygame.draw.rect(window, Enemyplayercolour, (Enemyplayerx - 20, Enemyplayery - 10, 40, 20))
 
     pygame.display.flip()
 

@@ -21,12 +21,12 @@ player_addresses = {}
 playerinput = {}
 
 Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
-#Player2 = Player((s.WIDTH // 2 , 40),s.RED)
+Player2 = Player((s.WIDTH // 2 , 40),s.RED)
 
 while True:
 
     start_time = time.time()
-    
+
     try:
         server_socket.settimeout(0.01)
         while True:
@@ -46,21 +46,23 @@ while True:
 
     try:
         player1move = (playerinput[0]["MouseX"], playerinput[0]["MouseY"])
-        #player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
+        player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
     except:
-        player1move = (0,0)
-        #player2move = (0,0)
-
-    Player1.move(player1move)
-    #Player2.move(player2move)
+        pass
+    
+    try:
+        Player1.move(player1move)
+        Player2.move(player2move)
+    except:
+        pass
 
     daten = {
         "x1": Player1.x,
         "y1": Player1.y,
         "colour1": Player1.colour,
-        #"x2": Player2.x,
-        #"y2": Player2.y,
-        #"colour2":Player2.colour,
+        "x2": Player2.x,
+        "y2": Player2.y,
+        "colour2":Player2.colour,
         "PlayerIPs": player_ips
     }
 
