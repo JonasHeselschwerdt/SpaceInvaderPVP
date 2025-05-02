@@ -8,15 +8,12 @@ import time
 HOST = '0.0.0.0'  
 PORT = 65432     
 
-
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 
 connections = []
 playerinput = {}
 player_ips = []
-
-# Threading starten:
 
 def client_thread(conn, spieler_id): 
     
@@ -39,15 +36,12 @@ def client_thread(conn, spieler_id):
             time.sleep(time_to_sleep)
     finally:
         conn.close()
-        #server_socket.close()
-
-
 
 server_socket.listen(2)  
 print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
 
 playercounter = 0
-while playercounter < 2:
+while playercounter < 1:
 
     conn, addr = server_socket.accept()
     print(f"Verbunden mit {addr}")
@@ -56,8 +50,6 @@ while playercounter < 2:
     thread = threading.Thread(target=client_thread, args=(conn, playercounter))
     thread.start()
     playercounter += 1
-
-# Ab hier Gameloop:
 
 Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
 Player2 = Player((s.WIDTH // 2 , 40),s.RED)
@@ -72,6 +64,7 @@ while True:
     except:
         player1move = (0,0)
         player2move = (0,0)
+
     Player1.move(player1move)
     Player2.move(player2move)
 
