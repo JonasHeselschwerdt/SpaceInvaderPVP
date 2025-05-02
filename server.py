@@ -6,6 +6,8 @@ from Creatures import Bullet
 import time
 import pygame
 
+pygame.init()
+
 HOST = '0.0.0.0'  
 PORT = 65432     
 
@@ -77,16 +79,16 @@ while True:
 
         bulletrect = pygame.Rect(bullet.x,bullet.y,bullet.width,bullet.height)
         if bullet.player == 1:
-            playerrect = pygame.rect(Player1.x,Player1.y,Player1.width,Player1.height)
+            playerrect = pygame.Rect(Player2.x,Player2.y,Player2.width,Player2.height)
         elif bullet.player == 2:
-            playerrect = pygame.rect(Player2.x,Player2.y,Player2.width,Player2.height)
+            playerrect = pygame.Rect(Player1.x,Player1.y,Player1.width,Player1.height)
         
         if bulletrect.colliderect(playerrect):
             bullet.delete = True
             print(f"Spieler {bullet.player} hat einen Punkt erzielt")
 
         
-    bullets = [bullet for bullet in bullets if not bullet.y < 0 or bullet.y > 600 or bullet.delete == True]
+    bullets = [bullet for bullet in bullets if 0 <= bullet.y <= 600 and not bullet.delete]
         
     daten = {
         "x1": Player1.x,
