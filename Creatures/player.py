@@ -12,6 +12,7 @@ class Player():
         self.speed = 8
         self.colour = farbe
         self.type = typ
+        self.lives = 5
 
     def move(self,move_order):
 

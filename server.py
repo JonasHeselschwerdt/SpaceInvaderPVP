@@ -85,9 +85,13 @@ while True:
         
         if bulletrect.colliderect(playerrect):
             bullet.delete = True
-            print(f"Spieler {bullet.player} hat einen Punkt erzielt")
+            if bullet.player == 1:
+                Player2.lives -= 1
+                print(f"Player 2 has now {Player2.lives} left")
+            elif bullet.player == 2:
+                Player1.lives -= 1
+                print(f"player 1 now has {Player1.lives} left")
 
-        
     bullets = [bullet for bullet in bullets if 0 <= bullet.y <= 600 and not bullet.delete]
         
     daten = {
