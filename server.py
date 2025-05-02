@@ -20,8 +20,8 @@ print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
 player_addresses = {}
 playerinput = {}
 
-Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE)
-Player2 = Player((s.WIDTH // 2 , 40),s.RED)
+Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE,1)
+Player2 = Player((s.WIDTH // 2 , 40),s.RED,2)
 
 while True:
 
@@ -49,7 +49,7 @@ while True:
         player2move = (playerinput[1]["MouseX"], playerinput[1]["MouseY"])
     except:
         pass
-    
+
     try:
         Player1.move(player1move)
         Player2.move(player2move)
