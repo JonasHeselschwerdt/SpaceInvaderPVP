@@ -62,19 +62,21 @@ while True:
         Player2.move(player2move)
     except:
         pass
+    try:
+        if playerinput[0]["shoot"] == True:
+            bullets.append(Bullet((Player1.x,Player1.y),1,s.LBLUE))
 
-    if playerinput[0]["shoot"] == True:
-        bullets.append(Bullet((Player1.x,Player1.y),1,s.LBLUE))
+        if playerinput[1]["shoot"] == True:
+            bullets.append(Bullet((Player2.x,Player2.y),2,s.LRED))
 
-    if playerinput[1]["shoot"] == True:
-        bullets.append(Bullet((Player2.x,Player2.y),2,s.LRED))
+        bullets = [bullet for bullet in bullets if not bullet.y < 0 or bullet.y > 600]
+    
+    except:
+        pass
 
     for bullet in bullets:
         bullet.movebullet()
-
-    bullets = [bullet for bullet in bullets if not bullet.y < 0 or bullet.y > 600]
-
-
+        
     daten = {
         "x1": Player1.x,
         "y1": Player1.y,
