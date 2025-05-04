@@ -148,7 +148,7 @@ while running:
         bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
 
         if Player1.lives <= 0 or Player2.lives <= 0:
-            paused = False
+            paused = True
         
     daten = {
         "x1": Player1.x,
