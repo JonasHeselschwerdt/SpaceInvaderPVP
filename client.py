@@ -90,6 +90,10 @@ while running:
         bulletlist = player_info["Bulletlist"] 
         enemielist = player_info["Enemylist"]
 
+        paused = player_info.get("Paused", False)
+        spieler1leben = player_info.get("Spieler1Leben", 0)
+        spieler2leben = player_info.get("Spieler2Leben", 0)
+
     except Exception as e:
         print(f"Fehler beim Empfangen: {e}")
         running = False
@@ -104,6 +108,24 @@ while running:
     for enemy in enemielist:
 
         pygame.draw.rect(window,enemy.colour,(enemy.x,enemy.y,enemy.width,enemy.height))
+
+
+#######
+
+    leben_text_local = s.font.render(f"Du: {spieler1leben if own_ip == player_info['PlayerIPs'][0] else spieler2leben} Leben", True, Localplayercolour)
+    leben_text_enemy = s.font.render(f"Gegner: {spieler2leben if own_ip == player_info['PlayerIPs'][0] else spieler1leben} Leben", True, Enemyplayercolour)
+
+    window.blit(leben_text_local, (10, 10))
+    window.blit(leben_text_enemy, (s.WIDTH - leben_text_enemy.get_width() - 10, 10))
+
+# Pausenstatus anzeigen
+    status_text = "PAUSIERT" if paused else "SPIEL LÄUFT"
+    status_colour = s.YELLOW if paused else s.GREEN
+    status_surface = s.font.render(status_text, True, status_colour)
+
+    window.blit(status_surface, (s.WIDTH // 2 - status_surface.get_width() // 2, 10))
+
+########
 
     pygame.display.flip()
 

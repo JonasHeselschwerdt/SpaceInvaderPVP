@@ -138,7 +138,8 @@ while True:
         "Bulletlist": bullets,
         "Enemylist": enemies,
         "Spieler1Leben": Player1.lives,
-        "Spieler2Leben": Player2.lives
+        "Spieler2Leben": Player2.lives,
+        "Paused": paused
     }
 
     data_serialized = pickle.dumps(daten)
