@@ -112,8 +112,8 @@ while running:
 
 #######
 
-    leben_text_local = s.font.render(f"Du: {spieler1leben if own_ip == player_info['PlayerIPs'][0] else spieler2leben} Leben", True, Localplayercolour)
-    leben_text_enemy = s.font.render(f"Gegner: {spieler2leben if own_ip == player_info['PlayerIPs'][0] else spieler1leben} Leben", True, Enemyplayercolour)
+    leben_text_local = s.font.render(f"Blau: {spieler1leben if own_ip == player_info['PlayerIPs'][0] else spieler2leben} Leben", True, Localplayercolour)
+    leben_text_enemy = s.font.render(f"Rot: {spieler2leben if own_ip == player_info['PlayerIPs'][0] else spieler1leben} Leben", True, Enemyplayercolour)
 
     window.blit(leben_text_local, (10, 10))
     window.blit(leben_text_enemy, (s.WIDTH - leben_text_enemy.get_width() - 10, 10))

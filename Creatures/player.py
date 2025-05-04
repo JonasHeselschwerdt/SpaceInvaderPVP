@@ -29,9 +29,9 @@ class Player():
         
             self.x = max(min(800 - (self.width // 2),self.x),(self.width // 2))
             if self.type == 1:
-                self.y = max(min(600 - (self.height // 2),self.y),400 - (self.height // 2))
+                self.y = max(min(550 - (self.height // 2),self.y),400 - (self.height // 2))
             elif self.type == 2:
-                self.y = max(min(200 - (self.height // 2),self.y),(self.height // 2)) 
+                self.y = max(min(200 - (self.height // 2),self.y), 50 + (self.height // 2)) 
                            
         else: 
             self.x = self.x

@@ -10,6 +10,7 @@ GREEN = (0, 255, 0)
 WHITE = (255,255,255)
 YELLOW = (255,255,0)
 
+pygame.init()
 font = pygame.font.SysFont("Arial", 24)
 
 SPAWNPROB = 2     # propability for a spawn of an enemy every second
