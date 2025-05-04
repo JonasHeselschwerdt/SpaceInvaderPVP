@@ -57,25 +57,25 @@ while running:
 
             if input_data.get("requestpause"):
                 paused = True
-            if input_data.get("requestcontinue") and not (Player1.lives * Player2.lives == 0):
+            if input_data.get("requestcontinue") and not (Player1.lives <= 0 or Player2.lives <= 0):
                 paused = False
             if input_data.get("requestrestart"):
                 bullets.clear()
                 enemies.clear()
-                Player1.x = 0
-                Player1.y = 0
-                Player2.x = 0
-                Player2.y = 0
+                Player1.x = s.WIDTH // 2
+                Player1.y = s.HEIGHT - 80
+                Player2.x = s.WIDTH // 2
+                Player2.y = 80
                 Player1.lives = 5
                 Player2.lives = 5
                 paused = False
             if input_data.get("requestshutdown"):
                 bullets.clear()
                 enemies.clear()
-                Player1.x = 0
-                Player1.y = 0
-                Player2.x = 0
-                Player2.y = 0
+                Player1.x = s.WIDTH // 2
+                Player1.y = s.HEIGHT - 80
+                Player2.x = s.WIDTH // 2
+                Player2.y = 80
                 Player1.lives = 5
                 Player2.lives = 5
                 running = False
@@ -119,11 +119,8 @@ while running:
                 bullet.delete = True
                 if bullet.player == 1:
                     Player2.lives -= 1
-                    print(f"Player 2 has now {Player2.lives} lives left")
                 elif bullet.player == 2:
                     Player1.lives -= 1
-                    print(f"player 1 now has {Player1.lives} lives left")
-
 
         if random.random() < (s.SPAWNPROB / 60):
 
@@ -150,7 +147,7 @@ while running:
         enemies = [enemy for enemy in enemies if 0 <= enemy.y <= s.HEIGHT and 0 <= enemy.x <= s.WIDTH and not enemy.delete]
         bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
 
-        if (Player1.lives * Player2.lives) == 0:
+        if Player1.lives <= 0 or Player2.lives <= 0:
             paused = False
         
     daten = {
