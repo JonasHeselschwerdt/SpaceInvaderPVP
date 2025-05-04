@@ -51,13 +51,14 @@ while True:
 
             player_id = [k for k, v in player_addresses.items() if v == addr][0]
             playerinput[player_id] = input_data
+
+            if input_data.get("requestpause"):
+                paused = True
+            if input_data.get("requestcontinue"):
+                paused = False
+
     except socket.timeout:
         pass
-
-    if playerinput[0]["requestpause"] == True or playerinput[1]["requestpause"] == True:
-        paused = True
-    if playerinput[0]["requestcontinue"] == True or playerinput[1]["requestcontinue"] == True:
-        paused = False
         
     #####
     if not paused:
@@ -126,25 +127,25 @@ while True:
         enemies = [enemy for enemy in enemies if 0 <= enemy.y <= s.HEIGHT and 0 <= enemy.x <= s.WIDTH and not enemy.delete]
         bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
         
-        daten = {
-            "x1": Player1.x,
-            "y1": Player1.y,
-            "colour1": Player1.colour,
-            "x2": Player2.x,
-            "y2": Player2.y,
-            "colour2":Player2.colour,
-            "PlayerIPs": player_ips,
-            "Bulletlist": bullets,
-            "Enemylist": enemies,
-            "Spieler1Leben": Player1.lives,
-            "Spieler2Leben": Player2.lives
-        }
+    daten = {
+        "x1": Player1.x,
+        "y1": Player1.y,
+        "colour1": Player1.colour,
+        "x2": Player2.x,
+        "y2": Player2.y,
+        "colour2":Player2.colour,
+        "PlayerIPs": player_ips,
+        "Bulletlist": bullets,
+        "Enemylist": enemies,
+        "Spieler1Leben": Player1.lives,
+        "Spieler2Leben": Player2.lives
+    }
 
-        data_serialized = pickle.dumps(daten)
-        data_length = len(data_serialized).to_bytes(4, 'big')
+    data_serialized = pickle.dumps(daten)
+    data_length = len(data_serialized).to_bytes(4, 'big')
 
-        for addr in player_addresses.values():
-            server_socket.sendto(data_serialized, addr)
+    for addr in player_addresses.values():
+        server_socket.sendto(data_serialized, addr)
 
     elapsed_time = time.time() - start_time
     time_to_sleep = max(0,1/60 - elapsed_time)

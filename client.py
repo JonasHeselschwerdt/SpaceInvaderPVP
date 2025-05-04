@@ -42,13 +42,13 @@ while running:
             if event.key == pygame.K_SPACE:
                 shoot = True
             if event.key == pygame.K_p:
-                requestpause == True
+                requestpause = True
             if event.key == pygame.K_r:
-                requestrestart == True
+                requestrestart = True
             if event.key == pygame.K_c:
-                requestcontinue == True
+                requestcontinue = True
             if event.key == pygame.K_e:
-                requestshutdown == True
+                requestshutdown = True
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
     input = {
