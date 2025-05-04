@@ -49,6 +49,7 @@ while running:
                 requestcontinue = True
             if event.key == pygame.K_e:
                 requestshutdown = True
+                running = False
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
     input = {

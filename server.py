@@ -7,6 +7,7 @@ from Creatures import Normal_Enemy
 import time
 import pygame
 import random
+import sys
 
 pygame.init()
 
@@ -25,8 +26,8 @@ print(f"Server läuft auf {HOST}:{PORT} und wartet auf Verbindung...")
 player_addresses = {}
 playerinput = {}
 
-Player1 = Player((s.WIDTH // 2, s.HEIGHT - 40),s.BLUE,1)
-Player2 = Player((s.WIDTH // 2 , 40),s.RED,2)
+Player1 = Player((s.WIDTH // 2, s.HEIGHT - 80),s.BLUE,1)
+Player2 = Player((s.WIDTH // 2 , 80),s.RED,2)
 bullets = []
 enemies = []
 paused = False
@@ -54,8 +55,28 @@ while True:
 
             if input_data.get("requestpause"):
                 paused = True
-            if input_data.get("requestcontinue"):
+            if input_data.get("requestcontinue") and not (Player1.lives * Player2.lives == 0):
                 paused = False
+            if input_data.get("requestrestart"):
+                bullets.clear()
+                enemies.clear()
+                Player1.x = 0
+                Player1.y = 0
+                Player2.x = 0
+                Player2.y = 0
+                Player1.lives = 5
+                Player1.lives = 5
+                paused = False
+            if input_data.get("requestshutdown"):
+                bullets.clear()
+                enemies.clear()
+                Player1.x = 0
+                Player1.y = 0
+                Player2.x = 0
+                Player2.y = 0
+                Player1.lives = 5
+                Player1.lives = 5
+                running = False
 
     except socket.timeout:
         pass
@@ -126,6 +147,9 @@ while True:
 
         enemies = [enemy for enemy in enemies if 0 <= enemy.y <= s.HEIGHT and 0 <= enemy.x <= s.WIDTH and not enemy.delete]
         bullets = [bullet for bullet in bullets if 0 <= bullet.y <= s.HEIGHT and not bullet.delete]
+
+        if (Player1.lives * Player2.lives) == 0:
+            paused = False
         
     daten = {
         "x1": Player1.x,
@@ -151,6 +175,9 @@ while True:
     elapsed_time = time.time() - start_time
     time_to_sleep = max(0,1/60 - elapsed_time)
     time.sleep(time_to_sleep)
+
+pygame.quit()
+sys.exit()
 
 
 
