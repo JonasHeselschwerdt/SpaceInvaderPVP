@@ -30,15 +30,36 @@ while running:
     window.fill(s.BLACK) 
 
     shoot = False
+    requestpause = False
+    requestrestart = False
+    requestcontinue = False
+    requestshutdown = False
 
     for event in pygame.event.get():            
         if event.type == pygame.QUIT:           
             running = False 
         elif event.type == pygame.KEYDOWN:
-            shoot = True
+            if event.key == pygame.K_SPACE:
+                shoot = True
+            if event.key == pygame.K_p:
+                requestpause == True
+            if event.key == pygame.K_r:
+                requestrestart == True
+            if event.key == pygame.K_c:
+                requestcontinue == True
+            if event.key == pygame.K_e:
+                requestshutdown == True
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
-    input = {"MouseX": mouse_x , "MouseY": mouse_y , "shoot": shoot}
+    input = {
+        "MouseX": mouse_x ,
+        "MouseY": mouse_y ,
+        "shoot": shoot , 
+        "requestpause" : requestpause,
+        "requestrestart": requestrestart,
+        "requestcontinue": requestcontinue,
+        "requestshutdown": requestshutdown
+        }
 
     data = pickle.dumps(input)
     sock.sendto(data, server_addr)
