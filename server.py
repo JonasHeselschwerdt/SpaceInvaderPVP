@@ -32,7 +32,9 @@ bullets = []
 enemies = []
 paused = False
 
-while True:
+running = True
+
+while running:
 
     start_time = time.time()
 
@@ -65,7 +67,7 @@ while True:
                 Player2.x = 0
                 Player2.y = 0
                 Player1.lives = 5
-                Player1.lives = 5
+                Player2.lives = 5
                 paused = False
             if input_data.get("requestshutdown"):
                 bullets.clear()
@@ -75,7 +77,7 @@ while True:
                 Player2.x = 0
                 Player2.y = 0
                 Player1.lives = 5
-                Player1.lives = 5
+                Player2.lives = 5
                 running = False
 
     except socket.timeout:
